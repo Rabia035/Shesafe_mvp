@@ -1,0 +1,1495 @@
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23ec4899'/%3E%3Cstop offset='100%25' stop-color='%2386198f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M32 14L46 20V31C46 40.5 40 48.5 32 51C24 48.5 18 40.5 18 31V20L32 14Z' fill='none' stroke='%23ffffff' stroke-width='4' stroke-linejoin='round'/%3E%3Cpath d='M26 32L30 36L39 27' fill='none' stroke='%23ffffff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    /* Pink-plum background & soft card styling */
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #fdf8fa;
+      background-image: linear-gradient(180deg, #fffafd 0%, #f8eef4 100%);
+      min-height: 100vh;
+    }
+
+    .role-btn {
+      font-weight: 500;
+    }
+
+    @keyframes pulseRing {
+      0% {
+        transform: scale(0.97);
+        box-shadow: 0 0 0 0 rgba(219, 39, 119, 0.35);
+      }
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 8px rgba(219, 39, 119, 0);
+      }
+      100% {
+        transform: scale(0.97);
+        box-shadow: 0 0 0 0 rgba(219, 39, 119, 0);
+      }
+    }
+
+    .sos-pulse {
+      animation: pulseRing 2.2s infinite;
+    }
+  </style>
+</head>
+<body class="text-stone-800 antialiased selection:bg-pink-100 selection:text-pink-950">
+  <!-- Clean Top Header with SheSafe Anchored on the Far Left -->
+  <header class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-stone-200/90 shadow-2xs">
+    <div class="w-full px-4 sm:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
+      <!-- SheSafe Brand Paired with a Soft Scenic Campus Commute View on the Far Left -->
+      <div class="flex items-center gap-3 shrink-0 mr-auto">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-pink-600 to-fuchsia-800 flex items-center justify-center text-white shadow-2xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+            </svg>
+          </div>
+          <span class="font-medium text-base tracking-tight text-stone-900">SheSafe</span>
+        </div>
+
+        <!-- Soft Scenic View beside SheSafe -->
+        <svg class="w-20 h-7 shrink-0 rounded-xl border border-pink-200/80 shadow-2xs overflow-hidden" viewBox="0 0 96 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="96" height="36" rx="8" fill="#FCE7F3" />
+          <circle cx="76" cy="10" r="5" fill="#F9A8D4" />
+          <path d="M0 25C18 16 34 18 52 24C68 29 82 22 96 19V36H0V25Z" fill="#FBCFE8" />
+          <path d="M0 29H96V36H0V29Z" fill="#E879F9" fill-opacity="0.22" />
+          <circle cx="20" cy="22" r="4" fill="#F472B6" fill-opacity="0.65" />
+          <circle cx="34" cy="21" r="5" fill="#EC4899" fill-opacity="0.45" />
+        </svg>
+      </div>
+
+      <!-- Centered Navigation Bar -->
+      <nav aria-label="Role Switcher" class="flex flex-wrap items-center justify-center gap-1.5 bg-stone-100 p-1 rounded-xl border border-stone-200/90 mx-auto">
+        <button id="role-student" type="button" onclick="switchRole('student')" class="role-btn px-4 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition flex items-center justify-center gap-1.5 whitespace-nowrap bg-pink-600 text-white shadow-2xs">
+          <span>Student</span>
+        </button>
+        <button id="role-guardian" type="button" onclick="switchRole('guardian')" class="role-btn px-4 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition flex items-center justify-center gap-1.5 whitespace-nowrap text-stone-700 hover:bg-white hover:text-stone-900 relative">
+          <span>Guardian</span>
+          <span id="guardian-sos-dot" class="hidden w-2 h-2 rounded-full bg-pink-600 animate-ping"></span>
+        </button>
+        <button id="role-driver" type="button" onclick="switchRole('driver')" class="role-btn px-4 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition flex items-center justify-center gap-1.5 whitespace-nowrap text-stone-700 hover:bg-white hover:text-stone-900">
+          <span>Driver</span>
+        </button>
+        <button id="role-admin" type="button" onclick="switchRole('admin')" class="role-btn px-4 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition flex items-center justify-center gap-1.5 whitespace-nowrap text-stone-700 hover:bg-white hover:text-stone-900 relative">
+          <span>Admin / Uni</span>
+          <span id="admin-sos-badge" class="hidden w-2 h-2 rounded-full bg-pink-600 animate-ping"></span>
+        </button>
+      </nav>
+
+      <!-- Right Balance Spacer -->
+      <div class="hidden lg:block ml-auto w-44 shrink-0" aria-hidden="true"></div>
+    </div>
+  </header>
+
+  <!-- Toast / Status Banner -->
+  <div id="toast-container" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-md pointer-events-none flex flex-col gap-2"></div>
+
+  <!-- Verified Driver & Vehicle Profile Modal -->
+  <div id="driver-profile-modal" class="hidden fixed inset-0 z-50 bg-stone-950/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="w-full max-w-[460px] bg-white rounded-2xl shadow-2xl border border-stone-200 overflow-hidden">
+      <div class="bg-gradient-to-r from-pink-700 to-fuchsia-900 px-5 py-4 text-white flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-medium uppercase tracking-wider text-pink-100">Verified Driver &amp; Vehicle Card</span>
+          <h3 id="modal-driver-name" class="text-base font-semibold mt-0.5">Driver Name</h3>
+        </div>
+        <button type="button" onclick="closeDriverModal()" aria-label="Close modal" class="w-8 h-8 rounded-lg bg-white/15 hover:bg-white/25 flex items-center justify-center text-sm font-medium transition">
+          ✕
+        </button>
+      </div>
+      <div id="modal-driver-body" class="p-5 space-y-4 text-xs sm:text-sm"></div>
+    </div>
+  </div>
+
+  <!-- Separate Workspace Below Navigation -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-7 items-stretch">
+      <!-- Left Column: Full-Height Balanced Demo Controls & Walkthrough -->
+      <aside class="lg:col-span-4 flex flex-col">
+        <div class="flex-1 flex flex-col gap-5">
+          <section class="bg-white rounded-2xl border border-stone-200/90 p-5 shadow-2xs space-y-3">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <span id="pitch-mode-indicator" class="w-2.5 h-2.5 rounded-full bg-pink-600"></span>
+                <h1 class="text-sm font-medium text-stone-900">Demo Controls</h1>
+              </div>
+              <button id="pitch-mode-toggle" type="button" onclick="togglePitchDemoMode()" class="px-3 py-1 rounded-lg text-xs font-medium bg-pink-50 text-pink-900 border border-pink-200 hover:bg-pink-100 transition whitespace-nowrap">
+                Demo Mode: ON
+              </button>
+            </div>
+            <p id="pitch-mode-desc" class="text-xs text-stone-600 leading-relaxed">
+              Changes persist in your browser via localStorage. Reset anytime before or after a live walkthrough.
+            </p>
+            <div class="pt-1">
+              <button type="button" onclick="resetDemoState()" class="w-full py-2 px-3.5 rounded-xl text-xs font-medium border border-stone-200 bg-stone-50 hover:bg-stone-100 text-stone-800 transition">
+                Reset Demo Data
+              </button>
+            </div>
+          </section>
+
+          <!-- Full-Height Walkthrough Box (Fills Remaining Height Down to Bottom) -->
+          <section class="flex-1 flex flex-col justify-between bg-white rounded-2xl border border-stone-200/90 p-5 shadow-2xs space-y-4">
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <h2 class="text-xs font-semibold uppercase tracking-wider text-stone-500">Walkthrough Flow</h2>
+                <span class="text-[11px] font-medium text-pink-900 bg-pink-50 border border-pink-200/80 px-2 py-0.5 rounded-md">2–3 Min Demo</span>
+              </div>
+              <ol class="space-y-4 text-xs text-stone-600 leading-relaxed">
+                <li class="flex gap-2.5">
+                  <span class="w-5 h-5 rounded-full bg-pink-100 text-pink-900 border border-pink-200 font-semibold text-[11px] flex items-center justify-center shrink-0 mt-0.5">1</span>
+                  <span><strong class="font-medium text-stone-800">Student:</strong> Filter routes by class/lab slot, inspect a verified driver, and reserve a monthly seat.</span>
+                </li>
+                <li class="flex gap-2.5">
+                  <span class="w-5 h-5 rounded-full bg-pink-100 text-pink-900 border border-pink-200 font-semibold text-[11px] flex items-center justify-center shrink-0 mt-0.5">2</span>
+                  <span><strong class="font-medium text-stone-800">Guardian:</strong> Switch to Guardian or click <em>Preview Guardian</em> to show real-time parent tracking without login.</span>
+                </li>
+                <li class="flex gap-2.5">
+                  <span class="w-5 h-5 rounded-full bg-pink-100 text-pink-900 border border-pink-200 font-semibold text-[11px] flex items-center justify-center shrink-0 mt-0.5">3</span>
+                  <span><strong class="font-medium text-stone-800">Driver &amp; Admin:</strong> Update rider pickup status, approve driver verification, and test the live SOS alert.</span>
+                </li>
+              </ol>
+            </div>
+
+            <div class="pt-3 border-t border-stone-100 flex items-center justify-between text-[11px] text-stone-500">
+              <span>All portals synced live</span>
+              <span class="font-medium text-pink-800">4 Roles Active</span>
+            </div>
+          </section>
+        </div>
+      </aside>
+
+      <!-- Right Column: Clean Frameless App Workspace -->
+      <div class="lg:col-span-8 flex flex-col">
+        <!-- ==================== STUDENT PORTAL ==================== -->
+        <section id="view-student" class="flex-1 flex flex-col">
+          <div class="flex-1 bg-white rounded-2xl shadow-2xs border border-stone-200/90 overflow-hidden">
+            <div class="bg-gradient-to-r from-pink-700 via-pink-800 to-fuchsia-950 text-white px-5 sm:px-6 pt-5 pb-5">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <div>
+                  <p class="text-xs text-pink-100/90">Welcome back,</p>
+                  <h2 id="student-greeting" class="text-base sm:text-lg font-semibold"> Ayesha Tariq •SE (6th Sem)</h2>
+                </div>
+                <span class="px-3 py-1 rounded-full bg-white/15 border border-white/25 text-white text-[11px] font-medium">
+                  ID Verified
+                </span>
+              </div>
+
+              <div class="grid grid-cols-3 gap-2 bg-black/20 p-1 rounded-xl text-xs font-medium">
+                <button id="stab-routes" type="button" onclick="switchStudentTab('routes')" class="stab-btn py-2 rounded-lg bg-white text-pink-900 shadow-2xs transition">
+                  Routes
+                </button>
+                <button id="stab-ride" type="button" onclick="switchStudentTab('ride')" class="stab-btn py-2 rounded-lg text-white/85 hover:text-white transition">
+                  Live Ride
+                </button>
+                <button id="stab-pass" type="button" onclick="switchStudentTab('pass')" class="stab-btn py-2 rounded-lg text-white/85 hover:text-white transition">
+                  My Pass
+                </button>
+              </div>
+            </div>
+
+            <div class="p-4 sm:p-6 space-y-4">
+              <!-- TAB 1: ROUTES & VERIFIED DRIVERS -->
+              <div id="scontent-routes" class="space-y-4">
+                <div class="space-y-3">
+                  <div class="flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                      <h3 class="font-semibold text-stone-900 text-sm sm:text-base">Verified Female-Only Vans</h3>
+                      <p class="text-xs text-stone-500">Filter by class or lab time slot</p>
+                    </div>
+                    <select id="route-filter" onchange="renderStudentRoutes()" class="text-xs border border-stone-200 rounded-xl px-3 py-1.5 bg-stone-50 font-medium text-stone-700 focus:outline-none focus:ring-2 focus:ring-pink-600">
+                      <option value="all">All Availability</option>
+                      <option value="available">Seats Available</option>
+                      <option value="budget">Under PKR 5,000</option>
+                    </select>
+                  </div>
+
+                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 bg-stone-100 p-1 rounded-xl text-xs font-medium">
+                    <button id="slot-all" type="button" onclick="setTimeSlotFilter('all')" class="slot-btn py-1.5 rounded-lg bg-white text-pink-900 shadow-2xs transition">
+                      All Slots
+                    </button>
+                    <button id="slot-Morning" type="button" onclick="setTimeSlotFilter('Morning')" class="slot-btn py-1.5 rounded-lg text-stone-600 hover:text-stone-900 transition">
+                      Morning
+                    </button>
+                    <button id="slot-Mid-Day" type="button" onclick="setTimeSlotFilter('Mid-Day')" class="slot-btn py-1.5 rounded-lg text-stone-600 hover:text-stone-900 transition">
+                      Mid-Day
+                    </button>
+                    <button id="slot-Late Lab" type="button" onclick="setTimeSlotFilter('Late Lab')" class="slot-btn py-1.5 rounded-lg text-stone-600 hover:text-stone-900 transition">
+                      Late Lab
+                    </button>
+                  </div>
+                </div>
+
+                <div id="student-routes-list" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+              </div>
+
+              <!-- TAB 2: ACTIVE RIDE, GUARDIAN SHARE & SOS -->
+              <div id="scontent-ride" class="hidden space-y-4">
+                <div class="bg-stone-50 border border-stone-200 rounded-2xl p-4">
+                  <div class="flex items-center justify-between mb-2.5">
+                    <span id="ride-status-pill" class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-pink-100 text-pink-900">
+                      <span class="w-2 h-2 rounded-full bg-pink-600 animate-pulse"></span>
+                      Trip Active • En Route
+                    </span>
+                    <span id="ride-eta-label" class="text-xs font-medium text-stone-500">ETA 11 mins</span>
+                  </div>
+
+                  <div class="relative rounded-xl bg-white border border-stone-200 p-4 overflow-hidden">
+                    <div class="flex items-center justify-between text-xs font-medium text-stone-600 mb-1.5">
+                      <span id="ride-origin-label">Pickup: Satellite Town</span>
+                      <span id="ride-dest-label">Campus Gate 1</span>
+                    </div>
+                    <p id="ride-current-stop" class="text-xs font-semibold text-fuchsia-950 mb-2.5">Current Stop: 6th Road Stop</p>
+                    <div class="w-full h-2.5 bg-stone-100 rounded-full overflow-hidden border border-stone-200 mb-3">
+                      <div id="ride-progress-bar" class="h-full bg-gradient-to-r from-pink-600 to-fuchsia-800 rounded-full transition-all duration-500" style="width: 65%;"></div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs gap-2">
+                      <span class="font-medium text-stone-700 truncate" id="active-van-summary">Van #SH-104 • Tariq Mahmood</span>
+                      <button type="button" onclick="advanceRideProgress()" class="px-3 py-1 rounded-lg bg-pink-50 border border-pink-200 text-pink-900 font-medium text-xs hover:bg-pink-100 transition shrink-0">
+                        Next Stop
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Share Trip with Parents / Guardian -->
+                <div class="bg-pink-50/50 border border-pink-200/80 rounded-2xl p-4 space-y-3">
+                  <div class="flex items-center justify-between gap-2">
+                    <h4 class="text-xs font-semibold uppercase tracking-wide text-pink-950">Guardian Live Safety Link</h4>
+                    <button type="button" onclick="toggleGuardianContactEditor()" class="text-xs font-medium text-pink-800 hover:text-pink-950 underline">
+                      Edit Contact
+                    </button>
+                  </div>
+                  <div class="flex flex-wrap items-center justify-between gap-2 text-xs bg-white border border-pink-100 rounded-xl px-3.5 py-2.5">
+                    <div>
+                      <span class="text-stone-500">Guardian:</span>
+                      <span id="student-guardian-display" class="font-medium text-stone-800 ml-1">Tariq Aziz (+92 300 5550192)</span>
+                    </div>
+                    <span class="px-2 py-0.5 rounded-full bg-pink-100 text-pink-900 font-medium text-[11px]">No App Needed</span>
+                  </div>
+
+                  <div id="guardian-contact-editor" class="hidden bg-white border border-pink-200 rounded-xl p-3 space-y-2.5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      <div>
+                        <label for="input-guardian-name" class="block text-[10px] font-medium uppercase text-stone-500 mb-1">Guardian Name</label>
+                        <input id="input-guardian-name" type="text" class="w-full text-xs border border-stone-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-pink-600" />
+                      </div>
+                      <div>
+                        <label for="input-guardian-phone" class="block text-[10px] font-medium uppercase text-stone-500 mb-1">Guardian Phone / WhatsApp</label>
+                        <input id="input-guardian-phone" type="text" class="w-full text-xs border border-stone-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-pink-600" />
+                      </div>
+                    </div>
+                    <div class="flex justify-end gap-2 pt-1">
+                      <button type="button" onclick="toggleGuardianContactEditor(false)" class="px-3 py-1 rounded-lg text-xs font-medium text-stone-600 hover:bg-stone-100">
+                        Cancel
+                      </button>
+                      <button type="button" onclick="saveGuardianContact()" class="px-3 py-1 rounded-lg text-xs font-medium bg-pink-700 text-white hover:bg-pink-800">
+                        Save Contact
+                      </button>
+                    </div>
+                  </div>
+
+                  <p class="text-xs text-stone-600">
+                    Parents open a browser link directly—no student login or separate app required.
+                  </p>
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <button type="button" onclick="copySafetySummary()" class="py-2 px-3 rounded-xl bg-white hover:bg-stone-50 border border-stone-200 text-stone-800 text-xs font-medium transition">
+                      Copy Guardian Link
+                    </button>
+                    <button type="button" onclick="shareTripWithGuardian()" class="py-2 px-3 rounded-xl bg-pink-700 hover:bg-pink-800 text-white text-xs font-medium transition shadow-2xs">
+                      Share WhatsApp / SMS
+                    </button>
+                    <button type="button" onclick="openGuardianLiveView()" class="py-2 px-3 rounded-xl bg-fuchsia-950 hover:bg-fuchsia-900 text-white text-xs font-medium transition flex items-center justify-center gap-1">
+                      <span>Preview Guardian</span>
+                      <span aria-hidden="true">→</span>
+                    </button>
+                  </div>
+                  <div id="guardian-share-preview" class="hidden text-xs bg-white border border-pink-200 rounded-xl p-2.5 text-stone-700 break-all"></div>
+                </div>
+
+                <!-- Emergency SOS Button in Pink-Plum Palette -->
+                <div class="bg-pink-50/70 border border-pink-200 rounded-2xl p-4 text-center space-y-2.5">
+                  <p class="text-xs font-medium text-pink-950">Need urgent safety assistance?</p>
+                  <button id="sos-trigger-btn" type="button" onclick="startSOSCountdown()" class="sos-pulse w-full py-3 px-4 rounded-xl bg-gradient-to-r from-pink-700 to-fuchsia-900 hover:opacity-95 active:scale-[0.99] text-white font-semibold text-sm tracking-wide shadow-sm transition flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                    </svg>
+                    <span id="sos-btn-label">EMERGENCY SOS ALERT</span>
+                  </button>
+                  <button id="sos-cancel-btn" type="button" onclick="cancelSOSCountdown()" class="hidden w-full py-2 px-3 rounded-xl bg-white border border-pink-300 text-pink-900 text-xs font-medium hover:bg-pink-50 transition">
+                    Cancel SOS Countdown
+                  </button>
+                  <p id="sos-status-text" class="text-xs text-pink-900/85">
+                    Press once to start a 3-second confirmation before alerting Admin, Guardian &amp; Campus Security.
+                  </p>
+                  <div id="sos-active-actions" class="hidden pt-2 border-t border-pink-200 space-y-2 text-left">
+                    <p class="text-xs font-semibold text-pink-950">Emergency Contacts Ready:</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <button type="button" onclick="contactEmergency('Guardian (+92 300 5550192)')" class="py-2 px-3 rounded-xl bg-pink-700 hover:bg-pink-800 text-white text-xs font-medium transition">
+                        Alert Guardian
+                      </button>
+                      <button type="button" onclick="contactEmergency('Campus Security Desk')" class="py-2 px-3 rounded-xl bg-fuchsia-950 hover:bg-fuchsia-900 text-white text-xs font-medium transition">
+                        Call Campus Security
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TAB 3: MONTHLY PASS & BOOKING STATUS -->
+              <div id="scontent-pass" class="hidden space-y-3">
+                <h3 class="font-semibold text-stone-900 text-sm sm:text-base">Active Monthly Subscriptions</h3>
+                <div id="student-bookings-list" class="space-y-2.5"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== GUARDIAN / FAMILY LIVE TRACKING PORTAL ==================== -->
+        <section id="view-guardian" class="hidden">
+          <div class="bg-white rounded-2xl shadow-2xs border border-stone-200/90 overflow-hidden">
+            <div class="bg-gradient-to-r from-fuchsia-950 via-pink-900 to-pink-700 text-white px-5 sm:px-6 py-5 space-y-1">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="text-[11px] font-medium uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-white/15">
+                  Read-Only Family Access • No Student Login Needed
+                </span>
+                <button type="button" onclick="switchRole('student')" class="text-xs font-medium underline text-pink-100 hover:text-white">
+                  Back to Student View
+                </button>
+              </div>
+              <h2 id="guardian-student-title" class="text-lg font-semibold pt-1">Ayesha Tariq — Live Commute</h2>
+              <p id="guardian-contact-subtitle" class="text-xs text-pink-100/90">
+                Shared with Tariq Aziz (+92 3xxxxxxxxx)
+              </p>
+            </div>
+
+            <div class="p-4 sm:p-6 space-y-4">
+              <div id="guardian-sos-banner" class="hidden rounded-2xl border border-pink-400 bg-pink-50 p-4 space-y-2.5">
+                <div class="flex items-center justify-between">
+                  <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-pink-900 uppercase tracking-wide">
+                    <span class="w-2.5 h-2.5 rounded-full bg-pink-600 animate-ping"></span>
+                    Emergency SOS Triggered
+                  </span>
+                  <span id="guardian-sos-time" class="text-xs font-medium text-pink-800">Just now</span>
+                </div>
+                <p id="guardian-sos-message" class="text-xs sm:text-sm text-pink-950"></p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+                  <button type="button" onclick="contactEmergency('Guardian Direct Line (+92 300 5550192)')" class="py-2 px-2.5 rounded-xl bg-pink-700 hover:bg-pink-800 text-white text-xs font-medium transition">
+                    Call Guardian
+                  </button>
+                  <button type="button" onclick="contactEmergency('Campus Security Control')" class="py-2 px-2.5 rounded-xl bg-fuchsia-950 hover:bg-fuchsia-900 text-white text-xs font-medium transition">
+                    Campus Sec.
+                  </button>
+                  <button type="button" onclick="contactEmergency('Emergency Helpline 15')" class="py-2 px-2.5 rounded-xl bg-stone-800 hover:bg-stone-900 text-white text-xs font-medium transition">
+                    Call 15
+                  </button>
+                </div>
+              </div>
+
+              <div class="rounded-2xl bg-stone-50 border border-stone-200 p-4 space-y-3">
+                <div class="flex items-center justify-between gap-2">
+                  <span id="guardian-trip-badge" class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-pink-100 text-pink-900">
+                    <span class="w-2 h-2 rounded-full bg-pink-600 animate-pulse"></span>
+                    En Route to Campus
+                  </span>
+                  <span id="guardian-last-updated" class="text-xs font-medium text-stone-500">Updated just now</span>
+                </div>
+
+                <div class="rounded-xl bg-fuchsia-950 text-white p-4 space-y-2">
+                  <div class="flex items-center justify-between text-xs text-pink-100">
+                    <span>Live GPS Checkpoint</span>
+                    <span id="guardian-coords" class="font-mono text-[11px] bg-white/15 px-2.5 py-0.5 rounded-md">33.7463° N, 72.8397° E</span>
+                  </div>
+                  <p id="guardian-current-checkpoint" class="text-sm sm:text-base font-semibold text-white">6th Road Stop (65% Complete)</p>
+                  <p id="guardian-route-summary" class="text-xs text-pink-100/80">Satellite Town → Main Gate • Pickup 07:45 AM</p>
+                  <div class="w-full h-2.5 bg-white/15 rounded-full overflow-hidden mt-1">
+                    <div id="guardian-progress-bar" class="h-full bg-pink-400 rounded-full transition-all duration-500" style="width: 65%;"></div>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between text-xs">
+                  <span id="guardian-eta-text" class="font-medium text-stone-700">Estimated Arrival: 11 mins</span>
+                  <button type="button" onclick="advanceRideProgress()" class="px-3 py-1 rounded-lg bg-white border border-stone-200 text-pink-900 font-medium text-xs hover:bg-stone-50 transition">
+                    Simulate Next Stop
+                  </button>
+                </div>
+              </div>
+
+              <div id="guardian-driver-card" class="rounded-2xl border border-stone-200 bg-stone-50/80 p-4 space-y-2"></div>
+
+              <div class="rounded-2xl border border-stone-200 bg-white p-4 space-y-3">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-xs font-semibold uppercase tracking-wide text-stone-800">Guardian Access Link &amp; Passcode</h3>
+                  <span class="text-xs font-medium px-2.5 py-0.5 rounded-full bg-pink-100 text-pink-900">Active</span>
+                </div>
+                <div class="bg-stone-50 border border-stone-200 rounded-xl p-3 space-y-1.5">
+                  <p id="guardian-access-url" class="text-xs font-mono text-stone-700 break-all"></p>
+                  <div class="flex items-center justify-between pt-1.5 border-t border-stone-200/70">
+                    <span class="text-xs text-stone-500">Family Verification Passcode:</span>
+                    <span id="guardian-passcode-badge" class="text-xs font-medium font-mono tracking-wider text-fuchsia-950 bg-pink-100 px-2.5 py-0.5 rounded-md">SAFE-8421</span>
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <button type="button" onclick="copySafetySummary()" class="py-2 px-3 rounded-xl border border-stone-200 bg-stone-50 hover:bg-stone-100 text-stone-800 text-xs font-medium transition">
+                    Copy Link &amp; Code
+                  </button>
+                  <button type="button" onclick="shareTripWithGuardian()" class="py-2 px-3 rounded-xl bg-pink-700 hover:bg-pink-800 text-white text-xs font-medium transition">
+                    Share with Family
+                  </button>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <button type="button" onclick="contactEmergency('Guardian Direct Line (+92 300 5550192)')" class="py-2.5 px-3 rounded-xl bg-pink-700 hover:bg-pink-800 text-white text-xs font-medium transition">
+                  Call Guardian
+                </button>
+                <button type="button" onclick="contactEmergency('Campus Security Desk')" class="py-2.5 px-3 rounded-xl bg-fuchsia-950 hover:bg-fuchsia-900 text-white text-xs font-medium transition">
+                  Campus Security
+                </button>
+                <button type="button" onclick="contactEmergency('Emergency Helpline 15')" class="py-2.5 px-3 rounded-xl bg-stone-800 hover:bg-stone-900 text-white text-xs font-medium transition">
+                  Call 15
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== DRIVER PORTAL ==================== -->
+        <section id="view-driver" class="hidden">
+          <div class="bg-white rounded-2xl shadow-2xs border border-stone-200/90 overflow-hidden">
+            <div class="bg-gradient-to-r from-pink-700 to-fuchsia-950 text-white px-5 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <span class="text-[11px] font-medium uppercase tracking-wider text-pink-100">Driver Portal</span>
+                <h2 class="text-base sm:text-lg font-semibold">Tariq Mahmood • Van #SH-104</h2>
+              </div>
+              <span id="driver-verification-badge" class="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-950 shrink-0">
+                Police Verified
+              </span>
+            </div>
+
+            <div class="p-4 sm:p-6 space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="p-3.5 rounded-2xl bg-stone-50 border border-stone-200">
+                  <p class="text-xs font-medium text-stone-500">Monthly Earnings Pool</p>
+                  <p id="driver-monthly-earnings" class="text-xl font-semibold text-stone-900 mt-0.5">PKR 12,600</p>
+                  <p class="text-[11px] text-stone-500">Fixed student subscriptions</p>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-pink-50/60 border border-pink-200/80">
+                  <p class="text-xs font-medium text-pink-900">Assigned Route</p>
+                  <p class="text-sm font-medium text-stone-900 mt-1">Satellite Town → Uni</p>
+                  <p class="text-[11px] text-stone-500">Morning • 07:45 AM</p>
+                </div>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-stone-50 border border-stone-200/80 flex items-center justify-between gap-3">
+                <div>
+                  <span class="text-xs font-medium text-stone-800 block">Live Trip Control</span>
+                  <span id="driver-trip-subtext" class="text-xs text-stone-500">Broadcasting live route status</span>
+                </div>
+                <button id="driver-trip-toggle" type="button" onclick="toggleDriverTrip()" class="px-4 py-2 rounded-xl text-xs font-medium bg-pink-700 text-white hover:bg-pink-800 transition shrink-0">
+                  End Trip
+                </button>
+              </div>
+
+              <div class="space-y-2.5">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-xs font-semibold uppercase tracking-wide text-stone-700">Pickup &amp; Drop Checklist</h3>
+                  <span id="roster-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-stone-100 text-stone-700">
+                    3 Riders
+                  </span>
+                </div>
+                <div id="driver-passenger-list" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== ADMIN / UNIVERSITY PORTAL ==================== -->
+        <section id="view-admin" class="hidden">
+          <div class="bg-white rounded-2xl shadow-2xs border border-stone-200/90 overflow-hidden">
+            <div class="bg-gradient-to-r from-fuchsia-950 to-pink-800 text-white px-5 sm:px-6 py-4">
+              <span class="text-[11px] font-medium uppercase tracking-wider text-pink-100">Admin / University Dashboard</span>
+              <h2 class="text-base sm:text-lg font-semibold">Fleet Safety &amp; Revenue Overview</h2>
+            </div>
+
+            <div class="p-4 sm:p-6 space-y-5">
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div class="p-3.5 rounded-2xl bg-stone-50 border border-stone-200/80">
+                  <p class="text-xs font-medium text-stone-500">Active Bookings</p>
+                  <p id="kpi-bookings" class="text-xl font-semibold text-stone-900 mt-0.5">3</p>
+                  <p class="text-[11px] text-pink-800 font-medium">Monthly passes</p>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-stone-50 border border-stone-200/80">
+                  <p class="text-xs font-medium text-stone-500">Verified Drivers</p>
+                  <p id="kpi-verified-drivers" class="text-xl font-semibold text-stone-900 mt-0.5">2 / 3</p>
+                  <p class="text-[11px] text-stone-500">Police &amp; CNIC check</p>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-pink-50/60 border border-pink-200/80">
+                  <p class="text-xs font-medium text-pink-900">Est. Platform Fee (12%)</p>
+                  <p id="kpi-revenue" class="text-lg font-semibold text-pink-950 mt-0.5">PKR 1,512</p>
+                  <p class="text-[11px] text-stone-500">Monthly subscription fee</p>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-pink-50/80 border border-pink-200">
+                  <p class="text-xs font-medium text-pink-900">Active SOS Alerts</p>
+                  <p id="kpi-sos-count" class="text-xl font-semibold text-pink-700 mt-0.5">0</p>
+                  <p class="text-[11px] text-stone-500">Live monitoring</p>
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <h3 class="text-xs font-semibold uppercase tracking-wide text-stone-700 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-pink-600"></span>
+                  Live SOS Alerts
+                </h3>
+                <div id="admin-sos-list" class="space-y-2"></div>
+              </div>
+
+              <div class="space-y-2">
+                <h3 class="text-xs font-semibold uppercase tracking-wide text-stone-700">Driver Verification Approvals</h3>
+                <div id="admin-drivers-list" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // ==================== APPLICATION STATE & STORAGE ====================
+    const STORAGE_KEY = 'shesafe_mvp_state_v2';
+
+    const DEFAULT_STATE = {
+      pitchDemoMode: true,
+      activeRole: 'student',
+      activeStudentTab: 'routes',
+      timeSlotFilter: 'all',
+      selectedRouteId: 'r1',
+      modalDriverId: null,
+      tripActive: true,
+      rideProgress: 65,
+      lastUpdatedLabel: 'Updated just now',
+      guardianName: 'Tariq Aziz',
+      guardianPhone: '+92 300 5550192',
+      guardianPasscode: 'SAFE-8421',
+      lastShareLink: '',
+      routes: [
+        {
+          id: 'r1',
+          name: 'Satellite Town → Main Gate',
+          vanCode: 'Van #SH-104',
+          vehiclePlate: 'RIK-4821',
+          vehicleModel: 'Suzuki HiRoof (AC)',
+          timeSlot: 'Morning',
+          pickupTime: '07:45 AM',
+          returnTime: '02:30 PM',
+          monthlyFare: 4200,
+          seatsAvailable: 4,
+          totalSeats: 14,
+          stops: ['Satellite Town Block C', '6th Road Stop', 'Main Boulevard', 'Campus Gate 1'],
+          driverId: 'd1'
+        },
+        {
+          id: 'r2',
+          name: 'Model Town & Canal → Campus',
+          vanCode: 'Van #SH-209',
+          vehiclePlate: 'LWE-9034',
+          vehicleModel: 'Toyota Hiace Commuter',
+          timeSlot: 'Mid-Day',
+          pickupTime: '10:15 AM',
+          returnTime: '04:00 PM',
+          monthlyFare: 4800,
+          seatsAvailable: 6,
+          totalSeats: 16,
+          stops: ['Model Town Link', 'Canal Underpass', 'Library Stop', 'Campus Gate 2'],
+          driverId: 'd2'
+        },
+        {
+          id: 'r3',
+          name: 'Attock Stop → Lab Block',
+          vanCode: 'Van #SH-312',
+          vehiclePlate: 'FDL-1190',
+          vehicleModel: 'Suzuki Bolan (Budget)',
+          timeSlot: 'Late Lab',
+          pickupTime: '01:30 PM',
+          returnTime: '06:15 PM',
+          monthlyFare: 3600,
+          seatsAvailable: 3,
+          totalSeats: 10,
+          stops: ['Attock Stop', 'Clock Tower Stop', 'Science Block Gate'],
+          driverId: 'd3'
+        }
+      ],
+      drivers: [
+        {
+          id: 'd1',
+          name: 'Tariq Mahmood',
+          cnicMasked: '37405-XXXXXXX-1',
+          licenseVerified: true,
+          experience: '7 yrs driving',
+          policeVerified: true,
+          rating: '4.9 ★ (64 rides)',
+          safetyNotes: 'Verified background, punctuality score 98%'
+        },
+        {
+          id: 'd2',
+          name: 'Kamran Siddiqui',
+          cnicMasked: '37405-XXXXXXX-7',
+          licenseVerified: true,
+          experience: '5 yrs driving',
+          policeVerified: true,
+          rating: '4.8 ★ (41 rides)',
+          safetyNotes: 'Verified background, consistent route updates'
+        },
+        {
+          id: 'd3',
+          name: 'Farhan Raza',
+          cnicMasked: '37405-XXXXXXX-4',
+          licenseVerified: true,
+          experience: '4 yrs driving',
+          policeVerified: false,
+          rating: 'Pending Verification',
+          safetyNotes: 'Awaiting police clearance approval in Admin portal'
+        }
+      ],
+      bookings: [
+        {
+          id: 'b1',
+          studentName: 'Ayesha Tariq',
+          dept: 'CS • 6th Sem',
+          stop: '6th Road Stop',
+          routeId: 'r1',
+          status: 'On Board'
+        },
+        {
+          id: 'b2',
+          studentName: 'Hira Naveed',
+          dept: 'BBA • 4th Sem',
+          stop: 'Satellite Town Block C',
+          routeId: 'r1',
+          status: 'Picked Up'
+        },
+        {
+          id: 'b3',
+          studentName: 'Zainab Malik',
+          dept: 'EE • 8th Sem',
+          stop: 'Main Boulevard',
+          routeId: 'r1',
+          status: 'Scheduled'
+        }
+      ],
+      sosAlerts: []
+    };
+
+    let state = loadPersistedState();
+    let sosCountdownTimer = null;
+    let sosSecondsLeft = 0;
+
+    function loadPersistedState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return JSON.parse(JSON.stringify(DEFAULT_STATE));
+        const parsed = JSON.parse(raw);
+        return { ...JSON.parse(JSON.stringify(DEFAULT_STATE)), ...parsed };
+      } catch (err) {
+        return JSON.parse(JSON.stringify(DEFAULT_STATE));
+      }
+    }
+
+    function persistState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (err) {
+        // Ignore storage errors
+      }
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      const colorMap = {
+        info: 'bg-stone-900 text-white border-stone-700',
+        success: 'bg-pink-700 text-white border-pink-500',
+        danger: 'bg-fuchsia-900 text-white border-pink-500'
+      };
+      const toast = document.createElement('div');
+      toast.className = `px-4 py-3 rounded-2xl border shadow-xl text-xs sm:text-sm font-medium transition-all duration-300 ${colorMap[type] || colorMap.info}`;
+      toast.textContent = message;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 3200);
+    }
+
+    function togglePitchDemoMode() {
+      state.pitchDemoMode = !state.pitchDemoMode;
+      persistState();
+      renderPitchBanner();
+      showToast(state.pitchDemoMode ? 'Pitch Demo Mode enabled.' : 'Pitch Demo Mode set to Standard.', 'info');
+    }
+
+    function renderPitchBanner() {
+      const btn = document.getElementById('pitch-mode-toggle');
+      const dot = document.getElementById('pitch-mode-indicator');
+      const desc = document.getElementById('pitch-mode-desc');
+      if (!btn || !dot || !desc) return;
+
+      if (state.pitchDemoMode) {
+        btn.textContent = 'Demo Mode: ON';
+        btn.className = 'px-3 py-1 rounded-lg text-xs font-medium bg-pink-50 text-pink-900 border border-pink-200 hover:bg-pink-100 transition whitespace-nowrap';
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-pink-600';
+        desc.textContent = 'Changes persist in your browser via localStorage. Reset anytime before or after a live walkthrough.';
+      } else {
+        btn.textContent = 'Demo Mode: OFF';
+        btn.className = 'px-3 py-1 rounded-lg text-xs font-medium bg-stone-200 text-stone-700 hover:bg-stone-300 transition whitespace-nowrap';
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-stone-400';
+        desc.textContent = 'Standard interactive mode active. You can still reset demo data anytime below.';
+      }
+    }
+
+    function resetDemoState() {
+      cancelSOSCountdown();
+      state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+      state.lastShareLink = '';
+      document.getElementById('sos-active-actions')?.classList.add('hidden');
+      document.getElementById('guardian-contact-editor')?.classList.add('hidden');
+      document.getElementById('guardian-share-preview')?.classList.add('hidden');
+      const statusText = document.getElementById('sos-status-text');
+      if (statusText) {
+        statusText.textContent =
+          'Press once to start a 3-second confirmation before alerting Admin, Guardian & Campus Security.';
+      }
+      persistState();
+      renderAll();
+      showToast('Demo data reset to clean initial state.', 'info');
+    }
+
+    function switchRole(role) {
+      state.activeRole = role;
+      persistState();
+      ['student', 'guardian', 'driver', 'admin'].forEach((r) => {
+        const btn = document.getElementById(`role-${r}`);
+        const view = document.getElementById(`view-${r}`);
+        if (!btn || !view) return;
+        if (r === role) {
+          btn.className = 'role-btn px-4 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition flex items-center justify-center gap-1.5 whitespace-nowrap bg-pink-600 text-white shadow-2xs relative';
+          view.classList.remove('hidden');
+        } else {
+          btn.className = 'role-btn px-4 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition flex items-center justify-center gap-1.5 whitespace-nowrap text-stone-700 hover:bg-white hover:text-stone-900 relative';
+          view.classList.add('hidden');
+        }
+      });
+      renderAll();
+    }
+
+    function openGuardianLiveView() {
+      buildGuardianShareLink();
+      switchRole('guardian');
+      showToast('Opened Guardian Live Tracking view (no student login required).', 'info');
+    }
+
+    function toggleGuardianContactEditor(forceState) {
+      const editor = document.getElementById('guardian-contact-editor');
+      if (!editor) return;
+      const shouldShow = typeof forceState === 'boolean' ? forceState : editor.classList.contains('hidden');
+      if (shouldShow) {
+        document.getElementById('input-guardian-name').value = state.guardianName;
+        document.getElementById('input-guardian-phone').value = state.guardianPhone;
+        editor.classList.remove('hidden');
+      } else {
+        editor.classList.add('hidden');
+      }
+    }
+
+    function saveGuardianContact() {
+      const nameVal = document.getElementById('input-guardian-name').value.trim();
+      const phoneVal = document.getElementById('input-guardian-phone').value.trim();
+      if (!nameVal || !phoneVal) {
+        showToast('Please enter both Guardian name and phone/WhatsApp number.', 'danger');
+        return;
+      }
+      state.guardianName = nameVal;
+      state.guardianPhone = phoneVal;
+      buildGuardianShareLink();
+      persistState();
+      toggleGuardianContactEditor(false);
+      renderGuardianView();
+      renderActiveRide();
+      showToast('Guardian contact & live link updated.', 'success');
+    }
+
+    function advanceRideProgress() {
+      const route = getSelectedRoute();
+      const stopCount = Math.max(route.stops.length, 2);
+      const stepIncrement = Math.max(15, Math.round(100 / stopCount));
+      if (state.rideProgress >= 100) {
+        state.rideProgress = 25;
+      } else {
+        state.rideProgress = Math.min(100, state.rideProgress + stepIncrement);
+      }
+      state.lastUpdatedLabel = 'Updated just now (live GPS)';
+      persistState();
+      renderActiveRide();
+      renderGuardianView();
+      showToast(`Live checkpoint updated (${state.rideProgress}%).`, 'info');
+    }
+
+    function getTripStatusMeta(route) {
+      const activeSos = state.sosAlerts.find((a) => a.status === 'Active');
+      if (activeSos) {
+        return {
+          label: 'SOS ALERT ACTIVE',
+          pillClass: 'inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-pink-200 text-pink-950',
+          dotClass: 'w-2 h-2 rounded-full bg-pink-700 animate-ping',
+          etaText: 'Priority Safety Check',
+          coords: '33.7489° N, 72.8421° E'
+        };
+      }
+      if (!state.tripActive) {
+        return {
+          label: 'Trip Paused / Stand-By',
+          pillClass: 'inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-stone-200 text-stone-700',
+          dotClass: 'w-2 h-2 rounded-full bg-stone-500',
+          etaText: 'Scheduled for ' + route.pickupTime,
+          coords: '33.7441° N, 72.8365° E'
+        };
+      }
+      if (state.rideProgress >= 100) {
+        return {
+          label: 'Arrived at Campus / Destination',
+          pillClass: 'inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-fuchsia-100 text-fuchsia-950',
+          dotClass: 'w-2 h-2 rounded-full bg-fuchsia-700',
+          etaText: 'Arrived safely (0 mins)',
+          coords: '33.7518° N, 72.8482° E'
+        };
+      }
+      const etaMins = Math.max(2, Math.round(((100 - state.rideProgress) / 100) * 22));
+      return {
+        label: 'En Route • Live Tracking',
+        pillClass: 'inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-pink-100 text-pink-900',
+        dotClass: 'w-2 h-2 rounded-full bg-pink-600 animate-pulse',
+        etaText: `ETA ${etaMins} mins`,
+        coords: `33.74${Math.min(9, 5 + Math.floor(state.rideProgress / 20))}° N, 72.84${Math.floor(state.rideProgress / 15)}° E`
+      };
+    }
+
+    function buildGuardianShareLink() {
+      const route = getSelectedRoute();
+      const driver = state.drivers.find((d) => d.id === route.driverId) || state.drivers[0];
+      const shareUrl = `https://shesafe.app/track/${route.id}?pass=${encodeURIComponent(state.guardianPasscode)}`;
+      state.lastShareLink = `${shareUrl} | Code: ${state.guardianPasscode} | Driver: ${driver.name} (${route.vehiclePlate}) | Progress: ${state.rideProgress}%`;
+      persistState();
+      return { shareUrl, driver, route };
+    }
+
+    function shareTripWithGuardian() {
+      const { shareUrl, driver, route } = buildGuardianShareLink();
+      const preview = document.getElementById('guardian-share-preview');
+      const shareText = `SheSafe Live Commute Link for ${state.guardianName} (${state.guardianPhone}): ${shareUrl} | Passcode: ${state.guardianPasscode} | ${route.vanCode} (${route.vehiclePlate}) with ${driver.name}.`;
+      if (preview) {
+        preview.textContent = shareText;
+        preview.classList.remove('hidden');
+      }
+      showToast(`Shared live Guardian tracking link with ${state.guardianName} (${state.guardianPhone}).`, 'success');
+    }
+
+    function copySafetySummary() {
+      const { shareUrl, driver, route } = buildGuardianShareLink();
+      const textToCopy = `${shareUrl} | Passcode: ${state.guardianPasscode} | ${route.vanCode} (${route.vehiclePlate}) - ${driver.name} (${state.rideProgress}%)`;
+      const preview = document.getElementById('guardian-share-preview');
+      if (preview) {
+        preview.textContent = textToCopy;
+        preview.classList.remove('hidden');
+      }
+
+      try {
+        const tempInput = document.createElement('textarea');
+        tempInput.value = textToCopy;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+        showToast('Guardian link & passcode copied to clipboard.', 'success');
+      } catch (err) {
+        showToast('Guardian link ready below for copying.', 'info');
+      }
+    }
+
+    function renderActiveRide() {
+      const route = getSelectedRoute();
+      const driver = state.drivers.find((d) => d.id === route.driverId) || state.drivers[0];
+      const stopIndex = Math.min(
+        route.stops.length - 1,
+        Math.floor((state.rideProgress / 100) * route.stops.length)
+      );
+      const currentStop = route.stops[stopIndex] || route.stops[0];
+      const statusMeta = getTripStatusMeta(route);
+
+      const pill = document.getElementById('ride-status-pill');
+      if (pill) {
+        pill.className = statusMeta.pillClass;
+        pill.innerHTML = `<span class="${statusMeta.dotClass}"></span>${statusMeta.label}`;
+      }
+
+      const etaEl = document.getElementById('ride-eta-label');
+      if (etaEl) etaEl.textContent = statusMeta.etaText;
+      const originEl = document.getElementById('ride-origin-label');
+      if (originEl) originEl.textContent = `Pickup: ${route.stops[0]}`;
+      const destEl = document.getElementById('ride-dest-label');
+      if (destEl) destEl.textContent = route.stops[route.stops.length - 1];
+      const stopEl = document.getElementById('ride-current-stop');
+      if (stopEl) stopEl.textContent = `Current Stop: ${currentStop} (${state.rideProgress}%)`;
+      const barEl = document.getElementById('ride-progress-bar');
+      if (barEl) barEl.style.width = `${state.rideProgress}%`;
+      const vanEl = document.getElementById('active-van-summary');
+      if (vanEl) vanEl.textContent = `${route.vanCode} (${route.vehiclePlate}) • ${driver.name}`;
+      const guardianDisp = document.getElementById('student-guardian-display');
+      if (guardianDisp) guardianDisp.textContent = `${state.guardianName} (${state.guardianPhone})`;
+    }
+
+    function renderGuardianView() {
+      const route = getSelectedRoute();
+      const driver = state.drivers.find((d) => d.id === route.driverId) || state.drivers[0];
+      const stopIndex = Math.min(
+        route.stops.length - 1,
+        Math.floor((state.rideProgress / 100) * route.stops.length)
+      );
+      const currentStop = route.stops[stopIndex] || route.stops[0];
+      const statusMeta = getTripStatusMeta(route);
+      const { shareUrl } = buildGuardianShareLink();
+
+      const badge = document.getElementById('guardian-trip-badge');
+      if (badge) {
+        badge.className = statusMeta.pillClass;
+        badge.innerHTML = `<span class="${statusMeta.dotClass}"></span>${statusMeta.label}`;
+      }
+
+      const updatedEl = document.getElementById('guardian-last-updated');
+      if (updatedEl) updatedEl.textContent = state.lastUpdatedLabel || 'Updated just now';
+      const coordsEl = document.getElementById('guardian-coords');
+      if (coordsEl) coordsEl.textContent = statusMeta.coords;
+      const checkpointEl = document.getElementById('guardian-current-checkpoint');
+      if (checkpointEl) checkpointEl.textContent = `${currentStop} (${state.rideProgress}% Complete)`;
+      const routeSummaryEl = document.getElementById('guardian-route-summary');
+      if (routeSummaryEl) {
+        routeSummaryEl.textContent = `${route.name} • Pickup ${route.pickupTime} / Return ${route.returnTime}`;
+      }
+      const gBarEl = document.getElementById('guardian-progress-bar');
+      if (gBarEl) gBarEl.style.width = `${state.rideProgress}%`;
+      const gEtaEl = document.getElementById('guardian-eta-text');
+      if (gEtaEl) gEtaEl.textContent = `Estimated Arrival: ${statusMeta.etaText}`;
+
+      const driverCardEl = document.getElementById('guardian-driver-card');
+      if (driverCardEl) {
+        driverCardEl.innerHTML = `
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <span class="text-[10px] font-medium uppercase tracking-wider text-fuchsia-900">Assigned Driver &amp; Vehicle</span>
+              <h4 class="text-sm font-semibold text-stone-900 mt-0.5">${driver.name}</h4>
+              <p class="text-xs text-stone-600">${route.vanCode} • Plate: <span class="font-mono font-medium text-stone-800">${route.vehiclePlate}</span> (${route.vehicleModel})</p>
+            </div>
+            <span class="px-2.5 py-1 rounded-full text-[11px] font-medium shrink-0 ${
+              driver.policeVerified ? 'bg-pink-100 text-pink-900' : 'bg-amber-100 text-amber-900'
+            }">
+              ${driver.policeVerified ? 'Police Verified ✓' : 'Verification Pending'}
+            </span>
+          </div>
+          <div class="flex items-center justify-between pt-2 border-t border-stone-200 text-xs text-stone-600">
+            <span>${driver.rating}</span>
+            <button type="button" onclick="openDriverModal('${route.id}')" class="font-medium text-pink-800 hover:text-pink-950 underline">
+              Full Safety Card
+            </button>
+          </div>
+        `;
+      }
+
+      const urlEl = document.getElementById('guardian-access-url');
+      if (urlEl) urlEl.textContent = shareUrl;
+      const codeEl = document.getElementById('guardian-passcode-badge');
+      if (codeEl) codeEl.textContent = state.guardianPasscode;
+
+      const activeSos = state.sosAlerts.find((a) => a.status === 'Active');
+      const sosBanner = document.getElementById('guardian-sos-banner');
+      const guardianDot = document.getElementById('guardian-sos-dot');
+      if (sosBanner && guardianDot) {
+        if (activeSos) {
+          sosBanner.classList.remove('hidden');
+          guardianDot.classList.remove('hidden');
+          document.getElementById('guardian-sos-time').textContent = activeSos.timestamp;
+          document.getElementById('guardian-sos-message').textContent =
+            `${activeSos.studentName} triggered an SOS alert near ${currentStop} on ${activeSos.routeName} (${activeSos.vanCode}).`;
+        } else {
+          sosBanner.classList.add('hidden');
+          guardianDot.classList.add('hidden');
+        }
+      }
+    }
+
+    function contactEmergency(targetLabel) {
+      showToast(`Connecting emergency alert & call to ${targetLabel}...`, 'danger');
+    }
+
+    function getSelectedRoute() {
+      return state.routes.find((r) => r.id === state.selectedRouteId) || state.routes[0];
+    }
+
+    function switchStudentTab(tab) {
+      state.activeStudentTab = tab;
+      persistState();
+      ['routes', 'ride', 'pass'].forEach((t) => {
+        const btn = document.getElementById(`stab-${t}`);
+        const content = document.getElementById(`scontent-${t}`);
+        if (!btn || !content) return;
+        if (t === tab) {
+          btn.className = 'stab-btn py-2 rounded-lg bg-white text-pink-900 shadow-2xs transition';
+          content.classList.remove('hidden');
+        } else {
+          btn.className = 'stab-btn py-2 rounded-lg text-white/85 hover:text-white transition';
+          content.classList.add('hidden');
+        }
+      });
+      renderStudentBookings();
+      renderActiveRide();
+    }
+
+    function setTimeSlotFilter(slot) {
+      state.timeSlotFilter = slot;
+      persistState();
+      ['all', 'Morning', 'Mid-Day', 'Late Lab'].forEach((s) => {
+        const btn = document.getElementById(`slot-${s}`);
+        if (!btn) return;
+        if (s === slot) {
+          btn.className = 'slot-btn py-1.5 rounded-lg bg-white text-pink-900 shadow-2xs transition';
+        } else {
+          btn.className = 'slot-btn py-1.5 rounded-lg text-stone-600 hover:text-stone-900 transition';
+        }
+      });
+      renderStudentRoutes();
+    }
+
+    function selectRoute(routeId) {
+      state.selectedRouteId = routeId;
+      persistState();
+      renderStudentRoutes();
+      renderActiveRide();
+      renderGuardianView();
+    }
+
+    function renderStudentRoutes() {
+      const listEl = document.getElementById('student-routes-list');
+      if (!listEl) return;
+
+      const availFilter = document.getElementById('route-filter')?.value || 'all';
+      const filtered = state.routes.filter((r) => {
+        const slotMatch = state.timeSlotFilter === 'all' || r.timeSlot === state.timeSlotFilter;
+        const availMatch =
+          availFilter === 'all' ||
+          (availFilter === 'available' && r.seatsAvailable > 0) ||
+          (availFilter === 'budget' && r.monthlyFare < 5000);
+        return slotMatch && availMatch;
+      });
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = `<div class="col-span-full p-4 rounded-2xl bg-stone-50 border border-stone-200 text-xs text-stone-600 text-center">No vans match this filter. Try switching to All Slots.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = filtered
+        .map((r) => {
+          const driver = state.drivers.find((d) => d.id === r.driverId) || state.drivers[0];
+          const isSelected = r.id === state.selectedRouteId;
+          return `
+            <div onclick="selectRoute('${r.id}')" class="cursor-pointer rounded-2xl border p-4 transition space-y-2.5 ${
+              isSelected ? 'border-pink-600 bg-pink-50/40 shadow-2xs' : 'border-stone-200 bg-white hover:border-pink-300'
+            }">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-[10px] font-medium px-2 py-0.5 rounded-full bg-fuchsia-50 text-fuchsia-950 border border-fuchsia-200/70">${r.timeSlot} • ${r.pickupTime}</span>
+                    <span class="text-[10px] font-medium px-2 py-0.5 rounded-full ${
+                      driver.policeVerified ? 'bg-pink-100 text-pink-900' : 'bg-amber-100 text-amber-900'
+                    }">${driver.policeVerified ? 'Verified Driver' : 'Pending Check'}</span>
+                  </div>
+                  <h4 class="text-sm font-semibold text-stone-900 mt-1">${r.name}</h4>
+                  <p class="text-xs text-stone-500">${r.vanCode} (${r.vehiclePlate}) • ${driver.name}</p>
+                </div>
+                <div class="text-right shrink-0">
+                  <p class="text-sm font-semibold text-pink-900">PKR ${r.monthlyFare.toLocaleString()}</p>
+                  <p class="text-[11px] font-medium ${r.seatsAvailable > 0 ? 'text-pink-800' : 'text-stone-500'}">${r.seatsAvailable} seats left</p>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between pt-2.5 border-t border-stone-100 gap-2">
+                <button type="button" onclick="openDriverModal('${r.id}', event)" class="text-xs font-medium text-fuchsia-900 hover:text-fuchsia-950 underline">
+                  Driver &amp; Safety Card
+                </button>
+                <button type="button" onclick="bookRouteSeat('${r.id}', event)" ${
+                  r.seatsAvailable <= 0 ? 'disabled' : ''
+                } class="px-3 py-1.5 rounded-xl text-xs font-medium transition ${
+                  r.seatsAvailable > 0
+                    ? 'bg-gradient-to-r from-pink-600 to-fuchsia-800 hover:opacity-95 text-white shadow-2xs'
+                    : 'bg-stone-200 text-stone-400 cursor-not-allowed'
+                }">
+                  ${r.seatsAvailable > 0 ? 'Book Monthly Seat' : 'Full'}
+                </button>
+              </div>
+            </div>
+          `;
+        })
+        .join('');
+    }
+
+    function bookRouteSeat(routeId, event) {
+      if (event) event.stopPropagation();
+      const route = state.routes.find((r) => r.id === routeId);
+      if (!route || route.seatsAvailable <= 0) return;
+
+      route.seatsAvailable -= 1;
+      state.selectedRouteId = route.id;
+      state.bookings.unshift({
+        id: 'b_' + Date.now(),
+        studentName: 'Ayesha Tariq',
+        dept: 'CS • 6th Sem',
+        stop: route.stops[0],
+        routeId: route.id,
+        status: 'Subscribed'
+      });
+
+      persistState();
+      renderAll();
+      showToast(`Monthly seat reserved on ${route.name} (PKR ${route.monthlyFare.toLocaleString()}/mo).`, 'success');
+    }
+
+    function renderStudentBookings() {
+      const container = document.getElementById('student-bookings-list');
+      if (!container) return;
+
+      const myBookings = state.bookings.filter((b) => b.studentName === 'Ayesha Tariq');
+      if (myBookings.length === 0) {
+        container.innerHTML = `<div class="p-3.5 rounded-2xl bg-stone-50 border border-stone-200 text-xs text-stone-500">No active monthly passes yet.</div>`;
+        return;
+      }
+
+      container.innerHTML = myBookings
+        .map((b) => {
+          const r = state.routes.find((rt) => rt.id === b.routeId) || state.routes[0];
+          return `
+            <div class="p-3.5 rounded-2xl bg-stone-50 border border-stone-200 space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="text-xs sm:text-sm font-semibold text-stone-900">${r.name}</span>
+                <span class="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-pink-100 text-pink-900">${b.status}</span>
+              </div>
+              <p class="text-xs text-stone-600">${r.vanCode} • Pickup: ${b.stop} (${r.pickupTime})</p>
+              <p class="text-xs font-medium text-pink-900">PKR ${r.monthlyFare.toLocaleString()} / month</p>
+            </div>
+          `;
+        })
+        .join('');
+    }
+
+    function startSOSCountdown() {
+      if (sosCountdownTimer) return;
+      sosSecondsLeft = 3;
+      const label = document.getElementById('sos-btn-label');
+      const cancelBtn = document.getElementById('sos-cancel-btn');
+      const statusText = document.getElementById('sos-status-text');
+
+      cancelBtn?.classList.remove('hidden');
+      if (label) label.textContent = `CONFIRM SOS IN ${sosSecondsLeft}s...`;
+      if (statusText) statusText.textContent = 'Alerting Guardian, Campus Security & Admin console...';
+
+      sosCountdownTimer = setInterval(() => {
+        sosSecondsLeft -= 1;
+        if (sosSecondsLeft > 0) {
+          if (label) label.textContent = `CONFIRM SOS IN ${sosSecondsLeft}s...`;
+        } else {
+          clearInterval(sosCountdownTimer);
+          sosCountdownTimer = null;
+          cancelBtn?.classList.add('hidden');
+          if (label) label.textContent = 'EMERGENCY SOS ALERT';
+          triggerSOSAlert();
+        }
+      }, 1000);
+    }
+
+    function cancelSOSCountdown() {
+      if (sosCountdownTimer) {
+        clearInterval(sosCountdownTimer);
+        sosCountdownTimer = null;
+      }
+      sosSecondsLeft = 0;
+      document.getElementById('sos-cancel-btn')?.classList.add('hidden');
+      const label = document.getElementById('sos-btn-label');
+      if (label) label.textContent = 'EMERGENCY SOS ALERT';
+      const statusText = document.getElementById('sos-status-text');
+      if (statusText) {
+        statusText.textContent =
+          'SOS countdown cancelled. Press once to start a 3-second confirmation if needed.';
+      }
+    }
+
+    function triggerSOSAlert() {
+      const route = getSelectedRoute();
+      const newAlert = {
+        id: 'sos_' + Date.now(),
+        studentName: 'Ayesha Tariq',
+        routeName: route.name,
+        vanCode: route.vanCode,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        status: 'Active'
+      };
+      state.sosAlerts.unshift(newAlert);
+      persistState();
+
+      document.getElementById('sos-active-actions')?.classList.remove('hidden');
+      const statusText = document.getElementById('sos-status-text');
+      if (statusText) {
+        statusText.textContent = `SOS Active (${newAlert.timestamp}) — Guardian & Campus Security notified.`;
+      }
+      renderGuardianView();
+      renderAdminPortal();
+      showToast('EMERGENCY SOS triggered! Guardian & Admin alerted.', 'danger');
+    }
+
+    function resolveSOSAlert(alertId) {
+      const target = state.sosAlerts.find((a) => a.id === alertId);
+      if (target) target.status = 'Resolved';
+      if (!state.sosAlerts.some((a) => a.status === 'Active')) {
+        document.getElementById('sos-active-actions')?.classList.add('hidden');
+      }
+      persistState();
+      renderGuardianView();
+      renderAdminPortal();
+      showToast('SOS alert marked as resolved.', 'success');
+    }
+
+    function toggleDriverTrip() {
+      state.tripActive = !state.tripActive;
+      state.lastUpdatedLabel = 'Updated just now';
+      persistState();
+      renderDriverPortal();
+      renderActiveRide();
+      renderGuardianView();
+      showToast(state.tripActive ? 'Live trip started.' : 'Live trip paused.', 'info');
+    }
+
+    function cyclePassengerStatus(bookingId) {
+      const order = ['Scheduled', 'Picked Up', 'On Board', 'Dropped'];
+      const booking = state.bookings.find((b) => b.id === bookingId);
+      if (!booking) return;
+      const nextIdx = (order.indexOf(booking.status) + 1) % order.length;
+      booking.status = order[nextIdx];
+      persistState();
+      renderDriverPortal();
+      showToast(`${booking.studentName}: ${booking.status}`, 'info');
+    }
+
+    function renderDriverPortal() {
+      const driver = state.drivers[0];
+      const badge = document.getElementById('driver-verification-badge');
+      if (badge) {
+        badge.textContent = driver.policeVerified ? 'Police Verified' : 'Pending Verification';
+        badge.className = driver.policeVerified
+          ? 'px-2.5 py-1 rounded-full text-[11px] font-medium bg-pink-100 text-pink-900 shrink-0'
+          : 'px-2.5 py-1 rounded-full text-[11px] font-medium bg-amber-100 text-amber-900 shrink-0';
+      }
+
+      const pool = state.bookings.reduce((sum, b) => {
+        const r = state.routes.find((rt) => rt.id === b.routeId) || state.routes[0];
+        return sum + r.monthlyFare;
+      }, 0);
+      const earningsEl = document.getElementById('driver-monthly-earnings');
+      if (earningsEl) earningsEl.textContent = `PKR ${pool.toLocaleString()}`;
+
+      const tripBtn = document.getElementById('driver-trip-toggle');
+      const tripSub = document.getElementById('driver-trip-subtext');
+      if (tripBtn && tripSub) {
+        if (state.tripActive) {
+          tripBtn.textContent = 'End Trip';
+          tripBtn.className = 'px-4 py-2 rounded-xl text-xs font-medium bg-pink-700 text-white hover:bg-pink-800 transition shrink-0';
+          tripSub.textContent = 'Broadcasting live route status';
+        } else {
+          tripBtn.textContent = 'Start Trip';
+          tripBtn.className = 'px-4 py-2 rounded-xl text-xs font-medium bg-fuchsia-900 text-white hover:bg-fuchsia-950 transition shrink-0';
+          tripSub.textContent = 'Trip currently on stand-by';
+        }
+      }
+
+      const countBadge = document.getElementById('roster-count-badge');
+      if (countBadge) countBadge.textContent = `${state.bookings.length} Riders`;
+
+      const listEl = document.getElementById('driver-passenger-list');
+      if (!listEl) return;
+
+      listEl.innerHTML = state.bookings
+        .map(
+          (b) => `
+          <div class="p-3 rounded-2xl border border-stone-200 bg-white flex items-center justify-between gap-2">
+            <div>
+              <p class="text-xs font-semibold text-stone-900">${b.studentName}</p>
+              <p class="text-[11px] text-stone-500">${b.dept} • ${b.stop}</p>
+            </div>
+            <button type="button" onclick="cyclePassengerStatus('${b.id}')" class="px-2.5 py-1.5 rounded-xl text-[11px] font-medium bg-stone-100 text-stone-800 border border-stone-200 hover:bg-stone-200 transition shrink-0">
+              ${b.status} ↻
+            </button>
+          </div>
+        `
+        )
+        .join('');
+    }
+
+    function toggleDriverVerification(driverId) {
+      const driver = state.drivers.find((d) => d.id === driverId);
+      if (!driver) return;
+      driver.policeVerified = !driver.policeVerified;
+      driver.rating = driver.policeVerified ? '4.8 ★ (Verified)' : 'Pending Verification';
+      persistState();
+      renderAll();
+      showToast(`${driver.name} verification set to ${driver.policeVerified ? 'Verified' : 'Pending'}.`, 'success');
+    }
+
+    function renderAdminPortal() {
+      const activeSosList = state.sosAlerts.filter((a) => a.status === 'Active');
+      const verifiedCount = state.drivers.filter((d) => d.policeVerified).length;
+      const totalSubscriptionsValue = state.bookings.reduce((sum, b) => {
+        const r = state.routes.find((rt) => rt.id === b.routeId) || state.routes[0];
+        return sum + r.monthlyFare;
+      }, 0);
+      const platformFee = Math.round(totalSubscriptionsValue * 0.12);
+
+      document.getElementById('kpi-bookings').textContent = String(state.bookings.length);
+      document.getElementById('kpi-verified-drivers').textContent = `${verifiedCount} / ${state.drivers.length}`;
+      document.getElementById('kpi-revenue').textContent = `PKR ${platformFee.toLocaleString()}`;
+      document.getElementById('kpi-sos-count').textContent = String(activeSosList.length);
+
+      const adminBadge = document.getElementById('admin-sos-badge');
+      if (adminBadge) {
+        adminBadge.classList.toggle('hidden', activeSosList.length === 0);
+      }
+
+      const sosEl = document.getElementById('admin-sos-list');
+      if (sosEl) {
+        if (state.sosAlerts.length === 0) {
+          sosEl.innerHTML = `<div class="p-3 rounded-2xl bg-pink-50/60 border border-pink-200/80 text-xs text-pink-950">No SOS alerts triggered. All routes normal.</div>`;
+        } else {
+          sosEl.innerHTML = state.sosAlerts
+            .map(
+              (a) => `
+              <div class="p-3 rounded-2xl border ${
+                a.status === 'Active' ? 'bg-pink-100/70 border-pink-300' : 'bg-stone-50 border-stone-200'
+              } flex items-center justify-between gap-2">
+                <div>
+                  <p class="text-xs font-semibold text-stone-900">${a.studentName} • ${a.vanCode}</p>
+                  <p class="text-[11px] text-stone-600">${a.routeName} • ${a.timestamp} (${a.status})</p>
+                </div>
+                ${
+                  a.status === 'Active'
+                    ? `<button type="button" onclick="resolveSOSAlert('${a.id}')" class="px-2.5 py-1.5 rounded-xl text-[11px] font-medium bg-pink-700 hover:bg-pink-800 text-white shrink-0">Resolve</button>`
+                    : `<span class="text-[10px] font-medium px-2 py-0.5 rounded-full bg-stone-200 text-stone-700">Resolved</span>`
+                }
+              </div>
+            `
+            )
+            .join('');
+        }
+      }
+
+      const driversEl = document.getElementById('admin-drivers-list');
+      if (driversEl) {
+        driversEl.innerHTML = state.drivers
+          .map(
+            (d) => `
+            <div class="p-3 rounded-2xl border border-stone-200 bg-white flex items-center justify-between gap-2">
+              <div>
+                <p class="text-xs font-semibold text-stone-900">${d.name}</p>
+                <p class="text-[11px] text-stone-500">CNIC ${d.cnicMasked} • ${d.experience}</p>
+              </div>
+              <button type="button" onclick="toggleDriverVerification('${d.id}')" class="px-3 py-1.5 rounded-xl text-[11px] font-medium transition shrink-0 ${
+                d.policeVerified
+                  ? 'bg-pink-100 text-pink-900 hover:bg-pink-200'
+                  : 'bg-amber-100 text-amber-900 hover:bg-amber-200'
+              }">
+                ${d.policeVerified ? 'Verified ✓' : 'Approve'}
+              </button>
+            </div>
+          `
+          )
+          .join('');
+      }
+    }
+
+    function renderAll() {
+      renderPitchBanner();
+      renderStudentRoutes();
+      renderActiveRide();
+      renderGuardianView();
+      renderStudentBookings();
+      renderDriverPortal();
+      renderAdminPortal();
+    }
+
+    function openDriverModal(routeId, event) {
+      if (event) event.stopPropagation();
+      const route = state.routes.find((r) => r.id === routeId);
+      if (!route) return;
+      const driver = state.drivers.find((d) => d.id === route.driverId) || state.drivers[0];
+      state.modalDriverId = route.id;
+
+      document.getElementById('modal-driver-name').textContent = `${driver.name} • ${route.vanCode}`;
+      document.getElementById('modal-driver-body').innerHTML = `
+        <div class="flex flex-wrap gap-1.5">
+          <span class="px-2.5 py-1 rounded-full text-xs font-medium ${
+            driver.policeVerified ? 'bg-pink-100 text-pink-900' : 'bg-amber-100 text-amber-900'
+          }">${driver.policeVerified ? 'Police Verified ✓' : 'Verification Pending'}</span>
+          <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-stone-100 text-stone-800">${driver.experience}</span>
+          <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-fuchsia-50 text-fuchsia-950">${driver.rating}</span>
+        </div>
+        <div class="rounded-2xl bg-stone-50 border border-stone-200 p-3.5 space-y-1.5 text-xs text-stone-700">
+          <p><span class="font-medium">Vehicle:</span> ${route.vehicleModel} (Plate: <span class="font-mono font-medium">${route.vehiclePlate}</span>)</p>
+          <p><span class="font-medium">CNIC Check:</span> ${driver.cnicMasked}</p>
+          <p><span class="font-medium">Schedule:</span> Pickup ${route.pickupTime} • Return ${route.returnTime}</p>
+          <p><span class="font-medium">Safety Note:</span> ${driver.safetyNotes}</p>
+        </div>
+        <div class="flex gap-2">
+          <button type="button" onclick="closeDriverModal()" class="flex-1 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-medium text-xs transition">
+            Close
+          </button>
+          <button type="button" onclick="selectRoute('${route.id}'); closeDriverModal(); switchStudentTab('ride');" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-pink-600 to-fuchsia-800 hover:opacity-95 text-white font-medium text-xs transition">
+            Track Route
+          </button>
+        </div>
+      `;
+      document.getElementById('driver-profile-modal').classList.remove('hidden');
+    }
+
+    function closeDriverModal() {
+      document.getElementById('driver-profile-modal')?.classList.add('hidden');
+      state.modalDriverId = null;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      switchRole(state.activeRole || 'student');
+      switchStudentTab(state.activeStudentTab || 'routes');
+      setTimeSlotFilter(state.timeSlotFilter || 'all');
+      renderAll();
+    });
+  </script>
+</body>
+</html>

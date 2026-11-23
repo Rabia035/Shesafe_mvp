@@ -1,0 +1,42 @@
+/* Smooth custom scrollbars and subtle pulse animation for active safety indicators */
+body {
+font-family: 'Inter', system-ui, sans-serif;
+background: radial-gradient(circle at top right, #fce7f3 0%, #f5f3ff 45%, #f8fafc 100%);
+min-height: 100vh;
+}
+
+@keyframes pulseRing {
+0% {
+transform: scale(0.95);
+box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.55);
+}
+70% {
+transform: scale(1);
+box-shadow: 0 0 0 12px rgba(220, 38, 38, 0);
+}
+100% {
+transform: scale(0.95);
+box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+}
+}
+
+.sos-pulse {
+animation: pulseRing 2s infinite;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+display: none;
+}
+
+.no-scrollbar {
+-ms-overflow-style: none;
+scrollbar-width: none;
+}
+
+/* Mobile-first phone frame container centered cleanly on desktop */
+.mvp-phone-frame {
+width: 100%;
+max-width: 430px;
+margin-left: auto;
+margin-right: auto;
+}
